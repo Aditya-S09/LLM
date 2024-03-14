@@ -10,7 +10,7 @@ import pandas as pd
 # In[2]:
 
 
-with open('/pg2600.txt','r',encoding='utf-8') as f:
+with open('/data.txt','r',encoding='utf-8') as f:
     text = f.read()
 
 # In[3]:
