@@ -1,19 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import pandas as pd
 
 
-# In[2]:
+
 
 
 with open('/data.txt','r',encoding='utf-8') as f:
     text = f.read()
 
-# In[3]:
+
 
 
 import torch
@@ -22,7 +16,7 @@ import numpy as np
 import torch.nn.functional as F
 
 
-# In[4]:
+
 
 
 batch_size = 64 
@@ -38,7 +32,7 @@ n_layer = 8
 dropout = 0.2
 
 
-# In[5]:
+
 
 
 chars = sorted(list(set(text)))
@@ -54,38 +48,8 @@ train_data = data[:n]
 val_data = data[n:]
 
 
-# In[6]:
-
 
 vocab_size = len(chars)
-
-
-# In[7]:
-
-
-vocab_size
-
-
-# In[8]:
-
-
-
-
-
-# In[9]:
-
-
-
-
-
-# In[10]:
-
-
-print(data.shape)
-
-
-# In[11]:
-
 
 torch.manual_seed(1337)
 
@@ -100,13 +64,12 @@ def get_batch(split):
 a,b = get_batch("train")
 
 
-# In[12]:
 
 
 print(f"Our inputs {a.shape}\n {a}")
 
 
-# In[13]:
+
 
 
 @torch.no_grad()
@@ -125,7 +88,7 @@ def estimate_loss():
     return out
 
 
-# In[14]:
+
 
 
 class Head(nn.Module):
@@ -151,8 +114,6 @@ class Head(nn.Module):
         return out
 
 
-# In[15]:
-
 
 class MultiHeadAttention(nn.Module):
     def __init__(self,num_heads,head_size):
@@ -166,7 +127,7 @@ class MultiHeadAttention(nn.Module):
         return out
 
 
-# In[16]:
+
 
 
 class FeedForward(nn.Module):
@@ -177,25 +138,6 @@ class FeedForward(nn.Module):
         return self.net(x)
 
 
-# In[17]:
-
-
-class Block(nn.Module):
-    def __init__(self, n_embd, n_head):
-        super().__init__()
-        head_size = n_embd // n_head
-        self.sa = MultiHeadAttention(n_head, head_size)
-        self.ffwd = FeedFoward(n_embd)
-        self.ln1 = nn.LayerNorm(n_embd)
-        self.ln2 = nn.LayerNorm(n_embd)
-
-    def forward(self, x):
-        x = x + self.sa(self.ln1(x))
-        x = x + self.ffwd(self.ln2(x))
-        return x
-
-
-# In[18]:
 
 
 class Block(nn.Module):
@@ -213,7 +155,6 @@ class Block(nn.Module):
         return x
 
 
-# In[19]:
 
 
 class BML(nn.Module):
@@ -263,21 +204,13 @@ class BML(nn.Module):
         return idx
 
 
-# In[20]:
-
 
 model = BML()
 m = model.to(device)
 print(sum(p.numel() for p in m.parameters())/1e6, 'M parameters')
 
 
-# In[21]:
-
-
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-
-
-# In[22]:
 
 
 for iter in range(max_iters):
@@ -291,16 +224,5 @@ for iter in range(max_iters):
     loss.backward()
     optimizer.step()
 
-
-# In[23]:
-
-
 #context = torch.zeros((1, 1), dtype=torch.long, device=device)
 #print(decode(m.generate(context, max_new_tokens=2000)[0].tolist()))
-
-
-# In[25]:
-
-
-
-
